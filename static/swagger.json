@@ -1,0 +1,64 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "0.1.0",
+      "title": "Flask OpenAI API",
+      "description": "API documentation for the Flask-based web app"
+    },
+    "paths": {
+      "/": {
+        "get": {
+          "summary": "Hello, World!",
+          "responses": {
+            "200": {
+              "description": "A successful response",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "response": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/chat": {
+        "post": {
+          "summary": "Chat endpoint",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "content",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Chat response",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "response": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,105 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask App Test</title>
+</head>
+<body>
+    <button onclick="makeRequest()">Test API</button>
+
+    <script>
+        function makeRequest() {
+            fetch('http://localhost:5000/', {
+                method: 'GET',
+                headers: {
+                    'x-api-key': '95e9124ad3c34951cb7cbe445088062d'
+                }
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask API </title>
+</head>
+<body>
+    <h1>Flask API</h1>
+
+    <button id="getBtn">Hello, World!</button>
+    <p id="getResponse"></p>
+
+    <h2>Chat</h2>
+    <input type="text" id="chatInput" placeholder="Ask a question">
+    <button id="chatBtn">Chat</button>
+    <p id="chatResponse"></p>
+
+    <h2>Generate Image</h2>
+    <input type="text" id="imagePrompt" placeholder="Describe an image">
+    <button id="imageBtn">Generate Image</button>
+    <p id="imageResponse"></p>
+    <img id="generatedImage" style="display: none;" />
+
+    <script>
+
+        document.getElementById('getBtn').onclick = async function () {
+            const response = await fetch('http://127.0.0.1:5000/', {
+                method: 'GET',
+                headers: {
+                    'x-api-key': '95e9124ad3c34951cb7cbe445088062d' 
+                }
+            });
+
+            const data = await response.json();
+            document.getElementById('getResponse').textContent = data.response;
+        };
+
+        document.getElementById('chatBtn').onclick = async function () {
+            const userMessage = document.getElementById('chatInput').value;
+
+            const response = await fetch('http://127.0.0.1:5000/chat', {
+                method: 'POST',
+                headers: {
+                    'x-api-key': '95e9124ad3c34951cb7cbe445088062d',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ content: userMessage })
+            });
+
+            const data = await response.json();
+            document.getElementById('chatResponse').textContent = data.response;
+        };
+
+        document.getElementById('imageBtn').onclick = async function () {
+            const imagePrompt = document.getElementById('imagePrompt').value;
+
+            const response = await fetch('http://127.0.0.1:5000/generateImage', {
+                method: 'POST',
+                headers: {
+                    'x-api-key': '95e9124ad3c34951cb7cbe445088062d', 
+                    'Content-Type': 'application/json',
+                    'response-type': 'base64' 
+                },
+                body: JSON.stringify({ content: imagePrompt })
+            });
+
+            const data = await response.json();
+            if (data.base64) {
+                const img = document.getElementById('generatedImage');
+                img.src = `data:image/png;base64,${data.base64}`;
+                img.style.display = 'block';
+                document.getElementById('imageResponse').textContent = 'Image generated successfully!';
+            } else {
+                document.getElementById('imageResponse').textContent = 'Failed to generate image.';
+            }
+        };
+    </script>
+</body>
+</html>
